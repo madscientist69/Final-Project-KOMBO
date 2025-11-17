@@ -21,7 +21,7 @@ TCS3200 colorSensor(S0_PIN, S1_PIN, S2_PIN, S3_PIN, OUT_PIN);
 // Servo Pins
 Servo RServo;
 Servo GServo;
-Servo YServo;
+Servo WServo;
 
 // Motor driver L298N
 #define IN1 12
@@ -40,7 +40,7 @@ void setup() {
   // Servo setup
   RServo.attach(9);
   GServo.attach(10);
-  YServo.attach(11);
+  WServo.attach(11);
 
   // Motor setup
   pinMode(IN1, OUTPUT);
@@ -148,7 +148,7 @@ void loop() {
   if (R > G + 20 && R > B + 20) {
     RServo.write(pos + 45);
     GServo.write(pos);
-    YServo.write(pos);
+    WServo.write(pos);
     Serial.println("Detected: RED");
   }
 
@@ -156,23 +156,23 @@ void loop() {
   else if (G > R + 20 && G > B + 20) {
     GServo.write(pos + 45);
     RServo.write(pos);
-    YServo.write(pos);
+    WServo.write(pos);
     Serial.println("Detected: GREEN");
   }
 
-  // YELLOW (R & G tinggi, B rendah)
-  else if (R > 80 && G > 80 && B < 40) {
-    YServo.write(pos + 45);
+  /// WHITE (R, G, B tinggi)
+  else if (R > 80 && G > 80 && B > 80) {
+    WServo.write(pos + 45);
     RServo.write(pos);
     GServo.write(pos);
-    Serial.println("Detected: YELLOW");
-  }
+    Serial.println("Detected: WHITE");
+}
 
   // GRAY (semua warna hampir sama)
   else if (abs(R - G) < 15 && abs(G - B) < 15) {
     RServo.write(pos + 45);
     GServo.write(pos + 45);
-    YServo.write(pos + 45);
+    WServo.write(pos + 45);
     Serial.println("Detected: GRAY");
   }
 
@@ -180,7 +180,7 @@ void loop() {
     // No color
     RServo.write(pos);
     GServo.write(pos);
-    YServo.write(pos);
+    WServo.write(pos);
     Serial.println("No color detected");
   }
 
